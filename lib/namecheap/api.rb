@@ -46,13 +46,13 @@ module Namecheap
 
     def init_args
       %w(username key client_ip).each do |key|
-        if Namecheap.config.key.nil?
+        if Namecheap.config.send(key).nil?
           raise Namecheap::Config::RequiredOptionMissing,
             "Configuration parameter missing: #{key}, " +
             "please add it to the Namecheap.configure block"
         end
       end
-      options = {
+      {
         api_user:  Namecheap.config.username,
         user_name: Namecheap.config.username,
         api_key:   Namecheap.config.key,
