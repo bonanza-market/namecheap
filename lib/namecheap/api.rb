@@ -26,6 +26,7 @@ module Namecheap
     def request(method, command, options = {})
       command = 'namecheap.' + command
       options = init_args.merge(options).merge({:command => command})
+      endpoint = options.delete(:endpoint)
       options.keys.each do |key|
         options[key.to_s.camelize] = options.delete(key)
       end
@@ -33,13 +34,13 @@ module Namecheap
       case method
       when 'get'
         #raise options.inspect
-        HTTParty.get(ENDPOINT, { :query => options})
+        HTTParty.get(endpoint, { :query => options})
       when 'post'
-        HTTParty.post(ENDPOINT, { :query => options})
+        HTTParty.post(endpoint, { :query => options})
       when 'put'
-        HTTParty.put(ENDPOINT, { :query => options})
+        HTTParty.put(endpoint, { :query => options})
       when 'delete'
-        HTTParty.delete(ENDPOINT, { :query => options})
+        HTTParty.delete(endpoint, { :query => options})
       end
     end
 
@@ -55,7 +56,8 @@ module Namecheap
         api_user:  Namecheap.config.username,
         user_name: Namecheap.config.username,
         api_key:   Namecheap.config.key,
-        client_ip: Namecheap.config.client_ip
+        client_ip: Namecheap.config.client_ip,
+        endpoint: Namecheap.config.endpoint || ENDPOINT
       }
     end
   end
